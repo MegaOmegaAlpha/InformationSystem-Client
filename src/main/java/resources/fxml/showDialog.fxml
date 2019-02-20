@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerFX.EditDialogController">
+   <children>
+      <Label layoutX="26.0" layoutY="29.0" text="%name" />
+      <Label layoutX="25.0" layoutY="79.0" text="%artist">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets></Label>
+      <TextField fx:id="textName" layoutX="107.0" layoutY="25.0" promptText="%name" />
+      <TextField fx:id="textArtists" layoutX="107.0" layoutY="75.0" promptText="%artist" />
+      <Label layoutX="24.0" layoutY="129.0" text="%album" />
+      <Label layoutX="19.0" layoutY="179.0" text="%duration" />
+      <TextField fx:id="textAlbum" layoutX="107.0" layoutY="125.0" promptText="%album" />
+      <Button fx:id="btnSave" defaultButton="true" layoutX="137.0" layoutY="275.0" mnemonicParsing="false" onAction="#actionSave" text="%save" />
+      <TextField fx:id="textDuration" layoutX="107.0" layoutY="175.0" promptText="%duration" />
+      <Button fx:id="btnCancel" layoutX="197.0" layoutY="275.0" mnemonicParsing="false" onAction="#closeAction" text="%cancel" />
+      <MenuButton fx:id="btnMenu" contentDisplay="CENTER" layoutX="137.0" layoutY="223.0" mnemonicParsing="false" text="genres">
+        <items>
+            <CheckMenuItem fx:id="btnBlues" mnemonicParsing="false" text="Blues" />
+            <CheckMenuItem fx:id="btnCountry" mnemonicParsing="false" text="Country" />
+            <CheckMenuItem fx:id="btnClassic" mnemonicParsing="false" text="Classic" />
+            <CheckMenuItem fx:id="btnJazz" mnemonicParsing="false" text="Jazz" />
+            <CheckMenuItem fx:id="btnRap" mnemonicParsing="false" text="Rap" />
+            <CheckMenuItem fx:id="btnRock" mnemonicParsing="false" text="Rock" />
+        </items>
+      </MenuButton>
+      <Label layoutX="24.0" layoutY="227.0" text="%genre" />
+   </children>
+</Pane>

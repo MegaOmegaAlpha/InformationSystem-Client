@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.team25</groupId>
-    <artifactId>InformationSystem-Client</artifactId>
+    <artifactId>InformationSystem-Server</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
@@ -15,9 +15,37 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix> <!-- все зависимости будут искаться в папке 'lib' рядом с джарником -->
+                            <mainClass>start.Main<!-- тут надо указать полное (с пакетом) имя Main класса --></mainClass> <!-- это нужно, чтобы jar запускался мышкой как exe -->
+                        </manifest>
+                    </archive>
+                    <outputDirectory>${project.build.directory}/dist</outputDirectory> <!-- все пойдет в папку /target/dist -->
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.11.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
