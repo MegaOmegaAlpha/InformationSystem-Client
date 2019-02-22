@@ -93,6 +93,11 @@ public class UITrackListImpl implements UITrackList {
 
     }
 
+    @Override
+    public void setTracks(List<UITrack> tracks) {
+        this.tracks = tracks;
+    }
+
     /**
      * @return length of the tracklist
      */

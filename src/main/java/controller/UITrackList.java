@@ -13,5 +13,5 @@ public interface UITrackList {
     UITrack newTrack();
     void synchronize();
     List<UITrack> find(String artists, String album, String name, String duration, String genre);
-//  GenreDAO getGenreFile();
+    void setTracks(List<UITrack> tracks);
 }

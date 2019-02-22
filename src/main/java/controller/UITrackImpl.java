@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
-public class UITrackImpl implements UITrack {
+public class UITrackImpl implements UITrack  {
 
     private UUID id;
     private String name;

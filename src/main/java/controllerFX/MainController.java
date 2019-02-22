@@ -27,7 +27,6 @@ public class MainController extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-
         fxmlLoader.setLocation(getClass().getResource("/fxml/MainWindow.fxml"));
         fxmlLoader.setResources(ResourceBundle.getBundle("bundles.Locale", new Locale("en")));
         Parent fxmlMain = fxmlLoader.load();

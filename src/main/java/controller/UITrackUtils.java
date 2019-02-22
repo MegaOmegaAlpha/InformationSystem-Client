@@ -1,6 +1,9 @@
 package controller;
 
 
+import model.Track;
+
+import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,5 +96,22 @@ public class UITrackUtils {
             res.addAll(Arrays.asList(arr));
             return res;
         }
+    }
+    public static List<Track> convertToListTrack(List<UITrack> tracks){
+        List<Track> clscTracks = new ArrayList<Track>();
+        for (int i = 0; i < tracks.size(); i++) {
+            Track clscTrack = (Track) tracks.get(i);
+            clscTracks.add(clscTrack);
+        }
+        return clscTracks;
+    }
+
+    public static List<UITrack> convertToListUITrack(List<Track> tracks){
+        List<UITrack> clscTracks = new ArrayList<UITrack>();
+        for (int i = 0; i < tracks.size(); i++) {
+            UITrack clscTrack = (UITrack) tracks.get(i);
+            clscTracks.add(clscTrack);
+        }
+        return clscTracks;
     }
 }

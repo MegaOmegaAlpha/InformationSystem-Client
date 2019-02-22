@@ -1,5 +1,7 @@
 package controller;
 
+import model.Track;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,31 +22,31 @@ public class MessageHandler {
                 } else {
                     response.success = true;
                 }
-                return response;
+                break;
 
             case ID_NEW:
-                response.track = trackList.newTrack();
+                response.track = (Track) trackList.newTrack();
                 response.actionID = Message.ActionID.ID_NEW;
                 response.success = true;
-                return response;
+                break;
 
             case ID_DELETE:
-                trackList.delete(m.track);
+                trackList.delete((UITrack) m.track);
                 response.actionID = Message.ActionID.ID_DELETE;
                 response.success = true;
-                return response;
+                break;
 
             case ID_EDIT:
-                trackList.markAsChanged(m.track);
+                trackList.markAsChanged((UITrack) m.track);
                 response.actionID = Message.ActionID.ID_EDIT;
                 response.success = true;
-                return response;
+                break;
 
             case ID_SAVE:
                 trackList.synchronize();
                 response.actionID = Message.ActionID.ID_SAVE;
                 response.success = true;
-                return response;
+                break;
 
             case ID_GET:
                 List<UITrack> list = trackList.getTracks();
@@ -60,12 +62,12 @@ public class MessageHandler {
                     for ( int i = page - 1; i < page + 10; i++ ) {
                         shortList.add(list.get(i));
                     }
-                    response.list = shortList;
+                    response.list = UITrackUtils.convertToListTrack(shortList);
                     response.success = true;
                 }
-                return response;
+                break;
         }
 
-        return null;
+        return response;
     }
 }

@@ -1,5 +1,7 @@
 package controller;
 
+import model.Track;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -35,7 +37,7 @@ public class Message implements Serializable {
     public int clientID; // не нужен?
     public int page;
 
-    public UITrack track;
+    public Track track;
 
     public String id;
 
@@ -45,6 +47,6 @@ public class Message implements Serializable {
     public boolean success;
     public boolean end;
 
-    public List<UITrack> list;
+    public List<Track> list;
 
 }

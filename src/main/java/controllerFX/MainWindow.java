@@ -1,9 +1,6 @@
 package controllerFX;
 
 import java.io.File;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
 
 import java.util.Locale;
@@ -33,7 +30,7 @@ import java.io.IOException;
 
 public class MainWindow implements Initializable{
 
-    private UITrackList trackList; //= new UITrackListFactory().getUITrackList("trackfile", "genrefile");
+    private UITrackList trackList = new ProxyUITrackList();
 
     private Stage mainStage;
     private ResourceBundle resourceBundle;
@@ -67,32 +64,16 @@ public class MainWindow implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resourceBundle = resources;
-        Message message = new Message();
-        message.actionID = Message.ActionID.ID_INIT;
-        message.trackfile = "trackfile";
-        message.genrefile = "genrefile";
-        try {
-            Socket socket = new Socket("localhost", 0066);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectOutputStream.writeObject(message);
-            objectOutputStream.flush();
-            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-            message = (Message) objectInputStream.readObject();
-            trackList = new UITrackListFactory().getUITrackList(message.trackfile, message.genrefile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-//        updateCountLabel();
-//        initListeners();
+
+        updateCountLabel();
+        initListeners();
 
         clmnDuration.setCellValueFactory(new PropertyValueFactory<UITrack, String>("duration"));
         clmnAlbum.setCellValueFactory(new PropertyValueFactory<UITrack, String>("album"));
         clmnName.setCellValueFactory(new PropertyValueFactory<UITrack, String>("name"));
         clmnArtist.setCellValueFactory(new PropertyValueFactory<UITrack, String>("artists"));
         clmnGenre.setCellValueFactory(new PropertyValueFactory<UITrack, String>("genres"));
-//        tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
+        tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
 
         try {
             openFxmlLoader.setLocation(getClass().getResource("/fxml/OpenDialog.fxml"));
@@ -125,21 +106,21 @@ public class MainWindow implements Initializable{
                     trackList.synchronize();
                     break;
                 case "btnOpen":
-                    if (openStage == null){
-                        openStage = new Stage();
-                        openStage.setTitle("Open");
-                        openStage.setMinWidth(285);
-                        openStage.setMinHeight(150);
-                        openStage.setScene(new Scene(openDialog));
-                    }
-                    openStage.showAndWait();
-                    file = OpenController.openAction(mainStage);
-                    if (file != null){
-                        trackList = new UITrackListFactory().getUITrackList(file.getAbsolutePath(), "genrefile");
-                        mainStage.setTitle("Music library (" + file.getName() + ")");
-                        tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
-                        updateCountLabel();
-                    }
+//                    if (openStage == null){
+//                        openStage = new Stage();
+//                        openStage.setTitle("Open");
+//                        openStage.setMinWidth(285);
+//                        openStage.setMinHeight(150);
+//                        openStage.setScene(new Scene(openDialog));
+//                    }
+//                    openStage.showAndWait();
+//                    file = OpenController.openAction(mainStage);
+//                    if (file != null){
+//                        trackList = new UITrackListFactory().getUITrackList(file.getAbsolutePath(), "genrefile");
+//                        mainStage.setTitle("Music library (" + file.getName() + ")");
+//                        tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
+//                        updateCountLabel();
+//                    }
                     break;
             }
             return;
