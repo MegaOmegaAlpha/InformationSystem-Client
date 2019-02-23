@@ -131,9 +131,10 @@ public class MainWindow implements Initializable{
         switch (clickedButton.getId()){
             case "btnAdd":
                 title = resourceBundle.getString("add");
-                editDialogController.setTrack(trackList.newTrack(), true);
+                UITrack track = trackList.newTrack();
+                editDialogController.setTrack(track,true);
                 showDialog(title);
-
+                trackList.markAsNew(track);
                 tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
                 updateCountLabel();
                 break;
@@ -154,6 +155,7 @@ public class MainWindow implements Initializable{
                 title = resourceBundle.getString("delete");
                 trackList.delete(selectedTrack);
                 tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
+                tableSongsLibrary.refresh();
                 updateCountLabel();
                 break;
         }

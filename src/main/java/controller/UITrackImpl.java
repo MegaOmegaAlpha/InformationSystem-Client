@@ -3,6 +3,7 @@ package controller;
 import model.GenreDAO;
 import model.Track;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
-public class UITrackImpl implements UITrack  {
+public class UITrackImpl implements UITrack, Serializable {
 
     private UUID id;
     private String name;

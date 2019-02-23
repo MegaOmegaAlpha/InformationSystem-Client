@@ -17,8 +17,6 @@ public class ProxyUITrackList implements UITrackList{
     public ProxyUITrackList() {
         try {
             socket = new Socket("localhost", 0066);
-            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
             message = new Message();
             message.trackfile = "trackfile.xml";
             message.genrefile = "genrefile.xml";
@@ -37,8 +35,10 @@ public class ProxyUITrackList implements UITrackList{
 
     private Message sendMessage(Message message){
         try {
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectOutputStream.writeObject(message);
             objectOutputStream.flush();
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
             message = (Message) objectInputStream.readObject();
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,24 +52,33 @@ public class ProxyUITrackList implements UITrackList{
     public List<UITrack> getTracks() {
         message = new Message();
         message.actionID = Message.ActionID.ID_GET;
-        message.page = 1;
+//        message.page = 1;
         message = sendMessage(message);
-        return UITrackUtils.convertToListUITrack(message.list);
+        return message.list;
     }
 
     @Override
     public void delete(UITrack track) {
         message = new Message();
         message.actionID = Message.ActionID.ID_DELETE;
-        message.track = (Track) track;
+        message.track = track;
         message = sendMessage(message);
+
     }
 
     @Override
     public void markAsChanged(UITrack track) {
         message = new Message();
         message.actionID = Message.ActionID.ID_EDIT;
-        message.track = (Track) track;
+        message.track = track;
+        sendMessage(message);
+    }
+
+    @Override
+    public void markAsNew(UITrack track) {
+        message = new Message();
+        message.actionID = Message.ActionID.ID_FIX_NEW;
+        message.track = track;
         sendMessage(message);
     }
 
@@ -78,7 +87,7 @@ public class ProxyUITrackList implements UITrackList{
         message = new Message();
         message.actionID = Message.ActionID.ID_NEW;
         message = sendMessage(message);
-        return (UITrack) message.track;
+        return message.track;
     }
 
     @Override
@@ -97,4 +106,6 @@ public class ProxyUITrackList implements UITrackList{
     public void setTracks(List<UITrack> tracks) {
         message = new Message();
     }
+
+
 }

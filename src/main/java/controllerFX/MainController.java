@@ -1,25 +1,13 @@
 package controllerFX;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.control.TextArea;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
-import controller.UITrackListFactory;
 
 public class MainController extends Application {
 

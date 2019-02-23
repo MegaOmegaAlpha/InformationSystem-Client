@@ -25,19 +25,19 @@ public class MessageHandler {
                 break;
 
             case ID_NEW:
-                response.track = (Track) trackList.newTrack();
+                response.track = trackList.newTrack();
                 response.actionID = Message.ActionID.ID_NEW;
                 response.success = true;
                 break;
 
             case ID_DELETE:
-                trackList.delete((UITrack) m.track);
+                trackList.delete(m.track);
                 response.actionID = Message.ActionID.ID_DELETE;
                 response.success = true;
                 break;
 
             case ID_EDIT:
-                trackList.markAsChanged((UITrack) m.track);
+                trackList.markAsChanged(m.track);
                 response.actionID = Message.ActionID.ID_EDIT;
                 response.success = true;
                 break;
@@ -62,7 +62,7 @@ public class MessageHandler {
                     for ( int i = page - 1; i < page + 10; i++ ) {
                         shortList.add(list.get(i));
                     }
-                    response.list = UITrackUtils.convertToListTrack(shortList);
+                    response.list = shortList;
                     response.success = true;
                 }
                 break;

@@ -92,6 +92,11 @@ public class UITrackListImpl implements UITrackList {
         tracks = getAll();
 
     }
+    @Override
+    public void markAsNew(UITrack track) {
+        newTracks.add(track);
+        tracks.add(track);
+    }
 
     @Override
     public void setTracks(List<UITrack> tracks) {
