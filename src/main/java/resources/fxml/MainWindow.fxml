@@ -28,11 +28,13 @@
                   <Button fx:id="btnSearch" layoutX="150.0" layoutY="119.0" mnemonicParsing="false" text="%search" />
                </children>
             </Pane>
+            <Label fx:id="labelCount" layoutX="495.0" layoutY="26.0" text="Number of records:" />
+            <Button fx:id="btnRefresh" layoutX="495.0" layoutY="76.0" mnemonicParsing="false" onAction="#actionButtonPressed" text="Refresh table" />
          </children>
       </AnchorPane>
       <AnchorPane layoutY="177.0" prefHeight="275.0" prefWidth="670.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="190.0">
          <children>
-            <TableView fx:id="tableSongsLibrary" layoutX="90.0" prefHeight="235.0" prefWidth="490.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="0.0">
+            <TableView fx:id="tableSongsLibrary" layoutX="90.0" prefHeight="235.0" prefWidth="490.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="0.0">
               <columns>
                   <TableColumn fx:id="clmnName" prefWidth="75.0" text="%name" />
                 <TableColumn fx:id="clmnArtist" prefWidth="75.0" text="%artist" />
@@ -47,7 +49,6 @@
                   <Glow />
                </effect>
             </TableView>
-            <Label fx:id="labelCount" layoutX="90.0" layoutY="227.0" text="Number of records:" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="90.0" />
             <VBox layoutX="560.0" layoutY="19.0" prefHeight="229.0" prefWidth="110.0" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="19.0">
                <children>
                   <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#actionButtonPressed" prefWidth="70.0" text="%add">
@@ -67,6 +68,8 @@
                   </Button>
                </children>
             </VBox>
+            <Button fx:id="btnPrev" layoutX="258.0" layoutY="223.0" mnemonicParsing="false" onAction="#actionButtonPressed" text="Previous" />
+            <Button fx:id="btnNext" layoutX="346.0" layoutY="223.0" mnemonicParsing="false" onAction="#actionButtonPressed" text="Next" />
          </children>
       </AnchorPane>
       <MenuBar prefHeight="25.0" prefWidth="670.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

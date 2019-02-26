@@ -133,7 +133,7 @@ public class UITrackListImpl implements UITrackList {
      * @return reference to "tracks"
      */
     @Override
-    public List<UITrack> getTracks() {
+    public List<UITrack> getTracks(int page) {
         return tracks;
     }
 
@@ -143,9 +143,10 @@ public class UITrackListImpl implements UITrackList {
      * @param track track that needs to be removed
      */
     @Override
-    public void delete(UITrack track) {
+    public List<UITrack> delete(UITrack track) {
         deleteTracks.add(track);
         tracks.remove(track);
+        return tracks;
     }
 
     /**
@@ -156,6 +157,12 @@ public class UITrackListImpl implements UITrackList {
     @Override
     public void markAsChanged(UITrack track) {
         changedTracks.add(track);
+    }
+
+    public List<UITrack> fixedDelete(UITrack track){
+        deleteTracks.add(track);
+        tracks.remove(track);
+        return tracks;
     }
 
     /**
@@ -169,5 +176,8 @@ public class UITrackListImpl implements UITrackList {
         newTracks.add(track);
         tracks.add(track);
         return track;
+    }
+    public int currentPage(){
+        return 0;
     }
 }

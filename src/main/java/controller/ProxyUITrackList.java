@@ -14,12 +14,13 @@ public class ProxyUITrackList implements UITrackList{
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
 
-    public ProxyUITrackList() {
+    public ProxyUITrackList(String trackfile) {
         try {
             socket = new Socket("localhost", 0066);
             message = new Message();
-            message.trackfile = "trackfile.xml";
+            message.trackfile = trackfile;
             message.genrefile = "genrefile.xml";
+            message.page = 1;
             message.actionID = Message.ActionID.ID_INIT;
             message = sendMessage(message);
         } catch (IOException e) {
@@ -27,11 +28,10 @@ public class ProxyUITrackList implements UITrackList{
         }
     }
 
-    @Override
-    public int size() {
+
+    public int currentPage(){
         return 0;
     }
-
 
     private Message sendMessage(Message message){
         try {
@@ -47,23 +47,29 @@ public class ProxyUITrackList implements UITrackList{
         }
         return message;
     }
-
     @Override
-    public List<UITrack> getTracks() {
+    public int size() {
+        message = new Message();
+        message.actionID = Message.ActionID.ID_SIZE;
+        message = sendMessage(message);
+        return message.size;
+    }
+    @Override
+    public List<UITrack> getTracks(int page) {
         message = new Message();
         message.actionID = Message.ActionID.ID_GET;
-//        message.page = 1;
+        message.page = page;
         message = sendMessage(message);
         return message.list;
     }
 
     @Override
-    public void delete(UITrack track) {
+    public List<UITrack> delete(UITrack track) {
         message = new Message();
         message.actionID = Message.ActionID.ID_DELETE;
         message.track = track;
         message = sendMessage(message);
-
+        return message.list;
     }
 
     @Override
@@ -105,6 +111,15 @@ public class ProxyUITrackList implements UITrackList{
     @Override
     public void setTracks(List<UITrack> tracks) {
         message = new Message();
+    }
+
+    @Override
+    public List<UITrack> fixedDelete(UITrack track) {
+        message = new Message();
+        message.actionID = Message.ActionID.ID_DELETE;
+        message.track = track;
+        message = sendMessage(message);
+        return message.list;
     }
 
 

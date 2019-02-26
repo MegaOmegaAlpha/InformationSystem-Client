@@ -16,10 +16,8 @@ public class OpenController {
     TextField txtField;
 
 
-    public static File openAction(Stage mainStage){
-        //TODO Create message ID_GET
-
-        return file;
+    public String getTrackName() {
+        return trackName;
     }
 
     public void closeAction(ActionEvent actionEvent) {

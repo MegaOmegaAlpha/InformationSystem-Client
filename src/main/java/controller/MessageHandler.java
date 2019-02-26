@@ -1,7 +1,5 @@
 package controller;
 
-import model.Track;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +47,7 @@ public class MessageHandler {
                 break;
 
             case ID_GET:
-                List<UITrack> list = trackList.getTracks();
+                List<UITrack> list = trackList.getTracks(m.page);
                 int page = m.page;
                 response.actionID = Message.ActionID.ID_GET;
                 int pages = list.size()/10 + ((list.size()%10 == 0)? 0 : 1);

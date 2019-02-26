@@ -3,6 +3,7 @@ package controllerFX;
 import java.io.File;
 import java.net.URL;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -30,11 +31,11 @@ import java.io.IOException;
 
 public class MainWindow implements Initializable{
 
-    private UITrackList trackList = new ProxyUITrackList();
+    private UITrackList trackList = new ProxyUITrackList("trackfile.xml");
 
     private Stage mainStage;
     private ResourceBundle resourceBundle;
-
+    private  int currentPage = 1;
     @FXML
     private Label labelCount;
     @FXML
@@ -60,11 +61,15 @@ public class MainWindow implements Initializable{
     private FXMLLoader openFxmlLoader = new FXMLLoader();
     private OpenController openController;
     private Stage openStage;
+    private Parent deleteDialog;
+    private FXMLLoader deleteFxmlLoader = new FXMLLoader();
+    private DeleteController deleteController;
+    private Stage deleteStage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resourceBundle = resources;
-
+        tableSongsLibrary.getStylesheets().add((getClass().getResource("/fxml/TableViewStyle.css")).toExternalForm());
         updateCountLabel();
         initListeners();
 
@@ -73,7 +78,7 @@ public class MainWindow implements Initializable{
         clmnName.setCellValueFactory(new PropertyValueFactory<UITrack, String>("name"));
         clmnArtist.setCellValueFactory(new PropertyValueFactory<UITrack, String>("artists"));
         clmnGenre.setCellValueFactory(new PropertyValueFactory<UITrack, String>("genres"));
-        tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
+        tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks(1)));
 
         try {
             openFxmlLoader.setLocation(getClass().getResource("/fxml/OpenDialog.fxml"));
@@ -83,6 +88,9 @@ public class MainWindow implements Initializable{
             fxmlLoader.setResources(ResourceBundle.getBundle("bundles.Locale", new Locale("en")));
             fxmlEdit = fxmlLoader.load();
             editDialogController = fxmlLoader.getController();
+            deleteFxmlLoader.setLocation(getClass().getResource("/fxml/deleteDialog.fxml"));
+            deleteDialog = deleteFxmlLoader.load();
+            deleteController = deleteFxmlLoader.getController();
         }
         catch (IOException e){
             e.printStackTrace();
@@ -99,28 +107,24 @@ public class MainWindow implements Initializable{
 
         if(!(source instanceof Button) && source instanceof MenuItem) {
             MenuItem clickedMenuItem = (MenuItem)source;
-            File file;
             switch (clickedMenuItem.getId()){
                 case "btnSave":
                     // TODO: move this to a seperate button
                     trackList.synchronize();
                     break;
                 case "btnOpen":
-//                    if (openStage == null){
-//                        openStage = new Stage();
-//                        openStage.setTitle("Open");
-//                        openStage.setMinWidth(285);
-//                        openStage.setMinHeight(150);
-//                        openStage.setScene(new Scene(openDialog));
-//                    }
-//                    openStage.showAndWait();
-//                    file = OpenController.openAction(mainStage);
-//                    if (file != null){
-//                        trackList = new UITrackListFactory().getUITrackList(file.getAbsolutePath(), "genrefile");
-//                        mainStage.setTitle("Music library (" + file.getName() + ")");
-//                        tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
-//                        updateCountLabel();
-//                    }
+                    if (openStage == null){
+                        openStage = new Stage();
+                        openStage.setTitle("Open");
+                        openStage.setMinWidth(285);
+                        openStage.setMinHeight(150);
+                        openStage.setScene(new Scene(openDialog));
+                    }
+                    openStage.showAndWait();
+                    trackList = new ProxyUITrackList(openController.getTrackName());
+                    mainStage.setTitle("Music library (" + openController.getTrackName() + ")");
+                    tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks(1)));
+                    updateCountLabel();
                     break;
             }
             return;
@@ -134,9 +138,14 @@ public class MainWindow implements Initializable{
                 UITrack track = trackList.newTrack();
                 editDialogController.setTrack(track,true);
                 showDialog(title);
-                trackList.markAsNew(track);
-                tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
-                updateCountLabel();
+                if (!editDialogController.getFlag()){
+                    trackList.delete(track);
+                }
+                else {
+                    trackList.markAsNew(track);
+                    tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks(currentPage)));
+                    updateCountLabel();
+                }
                 break;
             case "btnEdit":
                 if (!trackIsSelected(selectedTrack)) {
@@ -152,19 +161,44 @@ public class MainWindow implements Initializable{
                 if (!trackIsSelected(selectedTrack)) {
                     return;
                 }
-                title = resourceBundle.getString("delete");
-                trackList.delete(selectedTrack);
-                tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks()));
-                tableSongsLibrary.refresh();
-                updateCountLabel();
+                if (deleteStage == null){
+                    deleteStage = new Stage();
+                    deleteStage.setTitle("Delete");
+                    deleteStage.setMinWidth(350);
+                    deleteStage.setMinHeight(150);
+                    deleteStage.setScene(new Scene(deleteDialog));
+                }
+                deleteStage.showAndWait();
+                if (deleteController.flag){
+                    trackList.delete(selectedTrack);
+                    tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks(currentPage)));
+                    tableSongsLibrary.refresh();
+                    updateCountLabel();
+                }
                 break;
+            case "btnRefresh":
+                tableSongsLibrary.refresh();
+                break;
+            case "btnNext":
+                if (currentPage <= trackList.size()/8){
+                    currentPage++;
+                    tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks(currentPage)));
+                    tableSongsLibrary.refresh();
+                }
+                break;
+            case "btnPrev":
+                if (currentPage > 1){
+                    currentPage--;
+                    tableSongsLibrary.setItems(FXCollections.observableArrayList(trackList.getTracks(currentPage)));
+                    tableSongsLibrary.refresh();
+                }
         }
     }
 
 
 
     private void initListeners(){
-        FXCollections.observableArrayList(trackList.getTracks()).addListener(new ListChangeListener<UITrack>() {
+        FXCollections.observableArrayList(trackList.getTracks(1)).addListener(new ListChangeListener<UITrack>() {
             @Override
             public void onChanged(Change<? extends UITrack> c) {
                 updateCountLabel();
@@ -200,7 +234,7 @@ public class MainWindow implements Initializable{
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
-        mainStage.setTitle("Music library (trackfile)");
+        mainStage.setTitle("Music library (trackfile.xml)");
     }
 
 

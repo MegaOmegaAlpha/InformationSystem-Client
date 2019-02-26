@@ -72,7 +72,7 @@ public class EditDialogController implements Initializable{
     }
 
     public void closeAction(ActionEvent actionEvent) {
-        track = null;
+        add = false;
         Node source = (Node)actionEvent.getSource();
         Stage stage = (Stage)source.getScene().getWindow();
         stage.hide();
@@ -141,6 +141,8 @@ public class EditDialogController implements Initializable{
         }
         return true;
     }
-
+    public boolean getFlag(){
+        return add;
+    }
 
 }
